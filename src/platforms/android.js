@@ -24,7 +24,8 @@ var fs = require('fs')  // use existsSync in 0.6.x
 
 module.exports = {
     www_dir:function(project_dir) {
-        return path.join(project_dir, 'assets', 'www');
+        //TODO: 根据config.xml解析出startapp
+        return path.join(project_dir, 'assets', 'xface3', 'helloxface');
     },
     // reads the package name out of the Android Manifest file
     // @param string project_dir the absolute path to the directory containing the project
