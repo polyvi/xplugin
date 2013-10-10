@@ -9,6 +9,7 @@ var path = require('path'),
     config_changes = require('./util/config-changes'),
     xml_helpers = require('./util/xml-helpers'),
     Q = require('q'),
+    glob = require('glob'),
     platform_modules = require('./platforms');
 
 /* INSTALL FLOW
@@ -101,12 +102,14 @@ function callEngineScripts(engines) {
 
     return Q.all(
         engines.map(function(engine){
-            if(fs.existsSync(engine.scriptSrc)){
+            var scripts = glob.sync(engine.scriptSrc + '*');
+            if(scripts.length > 0){
+                engine.scriptSrc = scripts[0];
                 fs.chmodSync(engine.scriptSrc, '755');
                 var d = Q.defer();
                 child_process.exec(engine.scriptSrc, function(error, stdout, stderr) {
                     if (error) {
-                        require('../plugman').emit('log', 'Cordova project '+ engine.scriptSrc +' script failed (has a '+ engine.scriptSrc +' script, but something went wrong executing it), continuing anyways.');
+                        require('../plugman').emit('log', 'xFace project '+ engine.scriptSrc +' script failed (has a '+ engine.scriptSrc +' script, but something went wrong executing it), continuing anyways.');
                         engine.currentVersion = null;
                         d.resolve(engine); // Yes, resolve. We're trying to continue despite the error.
                     } else {
@@ -119,7 +122,7 @@ function callEngineScripts(engines) {
             }else if(engine.currentVersion){
                 return cleanVersionOutput(engine.currentVersion, engine.name)
             }else{
-                require('../plugman').emit('verbose', 'Cordova project '+ engine.scriptSrc +' not detected (lacks a '+ engine.scriptSrc +' script), continuing.');
+                require('../plugman').emit('verbose', 'xFace project '+ engine.scriptSrc +' not detected (lacks a '+ engine.scriptSrc +' script), continuing.');
                 return null;
             }
         })
