@@ -79,7 +79,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir) {
             var files = group.findall('Content');
             for (var j = 0, k = files.length; j < k; j++) {
                 var file = files[j];
-                if (file.attrib.Include.substr(0,11) == "xface3\\helloxface\\plugins" || file.attrib.Include == "xface3\\helloxface\\cordova_plugins.js") {
+                if (file.attrib.Include.substr(0,25) == "xface3\\helloxface\\plugins" || file.attrib.Include == "xface3\\helloxface\\cordova_plugins.js") {
                     // remove file reference
                     group.remove(0, file);
                     // remove ItemGroup if empty
