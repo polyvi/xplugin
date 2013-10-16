@@ -52,7 +52,7 @@ function possiblyFetch(actions, platform, project_dir, id, plugins_dir, options)
     // Check that the plugin has already been fetched.
     if (!fs.existsSync(plugin_dir)) {
         // if plugin doesnt exist, use fetch to get it.
-        return require('../plugman').raw.fetch(id, plugins_dir, { link: false, subdir: options.subdir, git_ref: options.git_ref, client: 'plugman', expected_id: options.expected_id })
+        return require('../plugman').raw.fetch(id, plugins_dir, { link: false, subdir: options.subdir, git_ref: options.git_ref, client: 'plugman', expected_id: options.expected_id, repoSet: options.repoSet })
         .then(function(plugin_dir) {
             return runInstall(actions, platform, project_dir, plugin_dir, plugins_dir, options);
         });
@@ -294,7 +294,8 @@ var runInstall = module.exports.runInstall = function runInstall(actions, platfo
                             is_top_level: false,
                             subdir: dep_subdir,
                             git_ref: dep_git_ref,
-                            expected_id: dep_plugin_id
+                            expected_id: dep_plugin_id,
+                            repoSet: options.repoSet
                         };
 
                         // CB-4770: registry fetching

@@ -96,6 +96,14 @@ module.exports = function fetchPlugin(plugin_dir, plugins_dir, options) {
             return dest;
         };
 
+        var repoSet = options.repoSet;
+        if(repoSet) {
+            var pluginPath = findPluginById(repoSet, plugin_dir);
+            if(pluginPath) {
+                require('../plugman').emit('verbose', 'Find plugin ' + plugin_dir + ' in location "' + pluginPath + '"');
+                plugin_dir = pluginPath;
+            }
+        }
         if(!fs.existsSync(plugin_dir)) {
             return registry.fetch([plugin_dir], options.client)
             .then(function(dir) {
@@ -113,6 +121,23 @@ module.exports = function fetchPlugin(plugin_dir, plugins_dir, options) {
         }
     }
 };
+
+function findPluginById(repoSet, pluginId) {
+    var pluginPath = null;
+    if (fs.existsSync(repoSet)) {
+        fs.readdirSync(repoSet).every(function (fileName) {
+            if(fileName.match(/-(extension|plugin)-/)) {
+                var xml = xml_helpers.parseElementtreeSync(path.join(repoSet, fileName, 'plugin.xml'));
+                if(pluginId == xml.getroot().attrib.id) {
+                    pluginPath = path.join(repoSet, fileName);
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+    return pluginPath;
+}
 
 // Helper function for checking expected plugin IDs against reality.
 function checkID(options, dir) {
