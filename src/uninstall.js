@@ -59,12 +59,14 @@ module.exports.uninstallPlugin = function(id, plugins_dir) {
             });
         }, Q())
         .then(function() {
-            shell.rm('-rf', plugin_dir);
+            if(fs.lstatSync(plugin_dir).isSymbolicLink()) fs.unlinkSync(plugin_dir);
+            else shell.rm('-rf', plugin_dir);
             require('../plugman').emit('verbose', id + ' deleted.');
         });
     } else {
         // axe the directory
-        shell.rm('-rf', plugin_dir);
+        if(fs.lstatSync(plugin_dir).isSymbolicLink()) fs.unlinkSync(plugin_dir);
+        else shell.rm('-rf', plugin_dir);
         require('../plugman').emit('verbose', 'Deleted "' + plugin_dir + '".');
         return Q();
     }

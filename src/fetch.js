@@ -98,6 +98,7 @@ module.exports = function fetchPlugin(plugin_dir, plugins_dir, options) {
 
         var repoSet = options.repoSet;
         if(repoSet) {
+            options.link = true; // 内部开发模式下，安装reposet下的插件使用link的方式
             var pluginPath = findPluginById(repoSet, plugin_dir);
             if(pluginPath) {
                 require('../plugman').emit('verbose', 'Find plugin ' + plugin_dir + ' in location "' + pluginPath + '"');
