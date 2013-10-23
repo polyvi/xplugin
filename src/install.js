@@ -195,7 +195,7 @@ var runInstall = module.exports.runInstall = function runInstall(actions, platfo
         }
     });
     if (is_installed) {
-        require('../plugman').emit('results', 'Plugin "' + plugin_id + '" already installed, \'sall good.');
+        require('../plugman').emit('results', 'Plugin "' + plugin_id + '" already installed, all good.');
         return Q();
     }
 
