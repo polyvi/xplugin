@@ -76,7 +76,7 @@ module.exports = function fetchPlugin(plugin_dir, plugins_dir, options) {
 
             var dest = path.join(plugins_dir, plugin_id);
 
-            if(fs.lstatSync(dest).isSymbolicLink()) fs.unlinkSync(dest);
+            if(fs.existsSync(dest) && fs.lstatSync(dest).isSymbolicLink()) fs.unlinkSync(dest);
             else shell.rm('-rf', dest);
             if (options.link && linkable) {
                 require('../plugman').emit('verbose', 'Symlinking from location "' + plugin_dir + '" to location "' + dest + '"');
