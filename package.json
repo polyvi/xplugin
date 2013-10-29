@@ -2,13 +2,13 @@
   "author": "chenxy <chenxy@polyvi.com>",
   "name": "xplugin",
   "description": "install/uninstall xFace plugins",
-  "version": "0.12.0",
+  "version": "0.14.0",
   "repository": {
     "type": "git",
     "url": "http://git.polyvi.com/gitweb/?p=xface-plugman.git"
   },
   "bugs": {
-    "url" : "https://issues.apache.org/jira/browse/CB",
+    "url" : "https://github.com/polyvi/xplugin/issues",
     "email" : "chenxy@polyvi.com"
   },
   "main": "plugman.js",

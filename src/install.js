@@ -9,8 +9,9 @@ var path = require('path'),
     config_changes = require('./util/config-changes'),
     xml_helpers = require('./util/xml-helpers'),
     Q = require('q'),
-    glob = require('glob'),
-    platform_modules = require('./platforms');
+    platform_modules = require('./platforms'),
+    os = require('os'),
+    isWindows = (os.platform() === 'win32');
 
 /* INSTALL FLOW
    ------------
@@ -92,6 +93,21 @@ function cleanVersionOutput(version, name){
         }
         require('../plugman').emit('verbose', name+' has been detected as using a development branch. Attemping to install anyways.');
     }     
+    
+    // add extra period/digits to conform to semver - some version scripts will output
+    // just a major or major minor version number
+    var majorReg = /\d+/,
+        minorReg = /\d+\.\d+/,
+        patchReg = /\d+\.\d+\.\d+/;
+    
+    if(patchReg.test(out)){
+        
+    }else if(minorReg.test(out)){
+        out = out.match(minorReg)[0]+'.0';
+    }else if(majorReg.test(out)){
+        out = out.match(majorReg)[0]+'.0.0';
+    }    
+    
     return out;
 }
 
@@ -102,14 +118,16 @@ function callEngineScripts(engines) {
 
     return Q.all(
         engines.map(function(engine){
-            var scripts = glob.sync(engine.scriptSrc + '*');
-            if(scripts.length > 0){
-                engine.scriptSrc = scripts[0];
-                fs.chmodSync(engine.scriptSrc, '755');
+            // CB-5192; on Windows scriptSrc doesn't have file extension so we shouldn't check whether the script exists
+            if(isWindows || fs.existsSync(engine.scriptSrc)){
+                
+                if(!isWindows) { // not required on Windows
+                    fs.chmodSync(engine.scriptSrc, '755');
+                }
                 var d = Q.defer();
                 child_process.exec(engine.scriptSrc, function(error, stdout, stderr) {
                     if (error) {
-                        require('../plugman').emit('log', 'xFace project '+ engine.scriptSrc +' script failed (has a '+ engine.scriptSrc +' script, but something went wrong executing it), continuing anyways.');
+                        require('../plugman').emit('log', 'xFace project '+ engine.scriptSrc +' script failed, continuing anyways.');
                         engine.currentVersion = null;
                         d.resolve(engine); // Yes, resolve. We're trying to continue despite the error.
                     } else {
