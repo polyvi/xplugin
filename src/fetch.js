@@ -80,7 +80,9 @@ module.exports = function fetchPlugin(plugin_dir, plugins_dir, options) {
             else shell.rm('-rf', dest);
             if (options.link && linkable) {
                 require('../plugman').emit('verbose', 'Symlinking from location "' + plugin_dir + '" to location "' + dest + '"');
-                fs.symlinkSync(plugin_dir, dest, 'dir');
+                // for `ln -s` command, when src path is relative, only the src path is relative to the target file/folder,
+                // then the link file is valid, so we use absolute path for src path.
+                fs.symlinkSync(path.resolve(plugin_dir), dest, 'dir');
             } else {
                 shell.mkdir('-p', dest);
                 require('../plugman').emit('verbose', 'Copying from location "' + plugin_dir + '" to location "' + dest + '"');
