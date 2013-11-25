@@ -72,11 +72,18 @@ module.exports = {
 
         var filepath = path.join(plugins_dir, platform + '.json');
         if (fs.existsSync(filepath)) {
-            return JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+            // TODO: extra_config为新加配置结点，为了与以前的配置文件兼容，作了以下临时处理，一段时间后删除
+            var config = JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+            if(!config.extra_config) {
+                config.extra_config = {};
+                fs.writeFileSync(filepath, JSON.stringify(config), 'utf-8');
+            }
+            return config;
         } else {
             var config = {
                 prepare_queue:{installed:[], uninstalled:[]},
                 config_munge:{},
+                extra_config:{},
                 installed_plugins:{},
                 dependent_plugins:{}
             };

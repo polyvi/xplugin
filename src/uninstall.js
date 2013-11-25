@@ -153,6 +153,10 @@ function handleUninstall(actions, platform, plugin_id, plugin_et, project_dir, w
             resourceFiles = platformTag.findall('./resource-file');
         assets = assets.concat(platformTag.findall('./asset'));
 
+        var proguardConfig = platformTag.find('./proguard-config'),
+            androidApplication = platformTag.find('./android-application'),
+            rootActivity = platformTag.find('./root-activity');
+
         // queue up native stuff
         sourceFiles && sourceFiles.forEach(function(source) {
             actions.push(actions.createAction(handler["source-file"].uninstall, [source, project_dir, plugin_id], handler["source-file"].install, [source, plugin_dir, project_dir, plugin_id]));
@@ -169,6 +173,17 @@ function handleUninstall(actions, platform, plugin_id, plugin_et, project_dir, w
         libFiles && libFiles.forEach(function(source) {
             actions.push(actions.createAction(handler["lib-file"].uninstall, [source, project_dir, plugin_id], handler["lib-file"].install, [source, plugin_dir, project_dir, plugin_id]));
         });
+        if(proguardConfig) {
+            actions.push(actions.createAction(handler["proguard-config"].uninstall, [proguardConfig, project_dir], handler["proguard-config"].install, [proguardConfig, project_dir]));
+        }
+
+        if(androidApplication) {
+            actions.push(actions.createAction(handler["android-application"].uninstall, [androidApplication, plugins_dir, project_dir], handler["android-application"].install, [androidApplication, plugins_dir, project_dir]));
+        }
+
+        if(rootActivity) {
+            actions.push(actions.createAction(handler["root-activity"].uninstall, [rootActivity, plugins_dir, project_dir], handler["root-activity"].install, [rootActivity, plugins_dir, project_dir]));
+        }
     }
 
     // queue up asset installation
