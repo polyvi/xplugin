@@ -89,7 +89,7 @@ module.exports = {
         install:function(application_el, plugins_dir, project_dir) {
             var platformConfig = config_changes.get_platform_json(plugins_dir, 'android'),
                 extraConfig = platformConfig.extra_config;
-            
+
             var applicationClass = application_el.attrib['name'];
             if(extraConfig['android-application']) {
                 throw new Error('Can\'t modify application class of AndroidManifest.xml for a second time.');
@@ -134,7 +134,7 @@ module.exports = {
                 mainActivityName = module.exports.activity_name(project_dir);
 
             var projectActivityPath = path.join(project_dir, 'src', mainPackage.replace(/\./g, '/'), mainActivityName + '.java');
-    
+
             if(extraConfig['root-activity']) {
                 return Q.reject(new Error('Can\'t modify root activity class of develop project for a second time.'));
             }
