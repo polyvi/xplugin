@@ -26,8 +26,8 @@ var path = require('path')
 
 module.exports = {
     www_dir:function(project_dir) {
-        // TODO: 根据配置文件解析startapp
-        return path.join(project_dir, 'xface3', 'helloxface');
+        var defaultAppId = common.findDefaultAppId(project_dir, 'ios');
+        return path.join(project_dir, 'xface3', defaultAppId);
     },
     package_name:function(project_dir) {
         var plist_file = glob.sync(path.join(project_dir, '**', '*-Info.plist'))[0];

@@ -25,8 +25,8 @@ var common = require('./common'),
 
 module.exports = {
     www_dir:function(project_dir) {
-        // TODO: 根据配置文件解析startapp
-        return path.join(project_dir, 'xface3', 'helloxface');
+        var defaultAppId = common.findDefaultAppId(project_dir, 'wp8');
+        return path.join(project_dir, 'xface3', defaultAppId);
     },
     package_name:function(project_dir) {
         return xml_helpers.parseElementtreeSync(path.join(project_dir, 'Properties', 'WMAppManifest.xml')).find('App').attrib.ProductID;

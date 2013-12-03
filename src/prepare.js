@@ -21,6 +21,7 @@ var platform_modules = require('./platforms'),
     path            = require('path'),
     config_changes  = require('./util/config-changes'),
     xml_helpers     = require('./util/xml-helpers'),
+    common          = require('./platforms/common'),
     wp7             = require('./platforms/wp7'),
     wp8             = require('./platforms/wp8'),
     windows8        = require('./platforms/windows8'),
@@ -71,6 +72,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir) {
     // for windows phone plaform we need to add all www resources to the .csproj file
     // first we need to remove them all to prevent duplicates
     var wp_csproj;
+    var defaultAppId = common.findDefaultAppId(project_dir, platform);
     if(platform == 'wp7') {
         wp_csproj = (platform == wp7? wp7.parseProjectFile(project_dir) : wp8.parseProjectFile(project_dir));
         var item_groups = wp_csproj.xml.findall('ItemGroup');
@@ -79,7 +81,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir) {
             var files = group.findall('Content');
             for (var j = 0, k = files.length; j < k; j++) {
                 var file = files[j];
-                if (file.attrib.Include.substr(0,25) == "xface3\\helloxface\\plugins" || file.attrib.Include == "xface3\\helloxface\\cordova_plugins.js") {
+                if (file.attrib.Include.substr(0,25) == "xface3\\" + defaultAppId + "\\plugins" || file.attrib.Include == "xface3\\" + defaultAppId + "\\cordova_plugins.js") {
                     // remove file reference
                     group.remove(0, file);
                     // remove ItemGroup if empty
@@ -162,9 +164,9 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir) {
                 scriptContent = 'cordova.define("' + moduleName + '", function(require, exports, module) {' + scriptContent + '});\n';
                 fs.writeFileSync(path.join(platformPluginsDir, plugin_id, fsPath), scriptContent, 'utf-8');
                 if(platform == 'wp7' || platform == "windows8") {
-                    wp_csproj.addSourceFile(path.join('xface3', 'helloxface', 'plugins', plugin_id, fsPath));
+                    wp_csproj.addSourceFile(path.join('xface3', defaultAppId, 'plugins', plugin_id, fsPath));
                 }
-    
+
                 // Prepare the object for cordova_plugins.json.
                 var obj = {
                     file: ['plugins', plugin_id, module.attrib.src].join('/'),
@@ -201,7 +203,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir) {
     fs.writeFileSync(path.join(wwwDir, 'cordova_plugins.js'), final_contents, 'utf-8');
 
     if(platform == 'wp7' || platform == "windows8") {
-        wp_csproj.addSourceFile(path.join('xface3', 'helloxface', 'cordova_plugins.js'));
+        wp_csproj.addSourceFile(path.join('xface3', defaultAppId, 'cordova_plugins.js'));
         wp_csproj.write();
     }
 };

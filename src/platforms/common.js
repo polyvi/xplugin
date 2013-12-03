@@ -1,6 +1,8 @@
 var shell = require('shelljs'),
     path  = require('path'),
-    fs    = require('fs');
+    fs    = require('fs'),
+    glob  = require('glob'),
+    xml_helpers = require('../util/xml-helpers');
 
 module.exports = {
     // helper for resolving source paths from plugin.xml
@@ -58,6 +60,23 @@ module.exports = {
                 break;
             }
         }
+    },
+    findDefaultAppId:function(platformProj, platform) {
+        var configXml = null;
+        if (platform == 'android') {
+            configXml = path.join(platformProj, 'res', 'xml', 'config.xml');
+        } else {
+            var matches = glob.sync(path.join(platformProj, '**', 'config.xml')).filter(function(p) {
+                return /.*xface3.config\.xml/.test(p) == false;
+            });
+            if (matches.length) configXml = matches[0];
+        }
+        if(configXml) {
+            var doc = xml_helpers.parseElementtreeSync(configXml);
+                appTag = doc.find('./pre_install_packages/app_package');
+            if(appTag) return appTag.attrib['id'];
+        }
+        return 'helloxface';
     },
     // handle <asset> elements
     asset:{
