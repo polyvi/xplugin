@@ -72,6 +72,7 @@ addProperty(plugman, 'search', './src/search', true);
 addProperty(plugman, 'info', './src/info', true);
 addProperty(plugman, 'config_changes', './src/util/config-changes');
 addProperty(plugman, 'platforms', './src/platforms');
+addProperty(plugman, 'common', './src/platforms/common');
 
 plugman.commands =  {
     'config'   : function(cli_opts) {

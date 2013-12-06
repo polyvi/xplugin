@@ -61,7 +61,7 @@ module.exports = {
             }
         }
     },
-    findDefaultAppId:function(platformProj, platform) {
+    getInstalledApps:function(platformProj, platform) {
         var configXml = null;
         if (platform == 'android') {
             configXml = path.join(platformProj, 'res', 'xml', 'config.xml');
@@ -71,12 +71,19 @@ module.exports = {
             });
             if (matches.length) configXml = matches[0];
         }
+        var apps = [];
         if(configXml) {
             var doc = xml_helpers.parseElementtreeSync(configXml);
-                appTag = doc.find('./pre_install_packages/app_package');
-            if(appTag) return appTag.attrib['id'];
+                appTags = doc.findall('./pre_install_packages/app_package');
+            appTags.forEach(function(a) {
+                apps.push(a.attrib['id']);
+            })
         }
-        return 'helloxface';
+        return apps;
+    },
+    findDefaultAppId:function(platformProj, platform) {
+        var apps = module.exports.getInstalledApps(platformProj, platform);
+        return apps.length > 0 ? apps[0] : 'helloxface';
     },
     // handle <asset> elements
     asset:{
