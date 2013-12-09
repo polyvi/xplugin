@@ -22,7 +22,8 @@ var path = require('path')
   , glob = require('glob')
   , xcode = require('xcode')
   , plist = require('plist')
-  , shell = require('shelljs');
+  , shell = require('shelljs')
+  , common = require('./common');
 
 module.exports = {
     www_dir:function(project_dir) {
