@@ -45,6 +45,7 @@ describe('wp8 project handler', function() {
     beforeEach(function() {
         shell.mkdir('-p', temp);
         shell.mkdir('-p', plugins_dir);
+        spyOn(common, 'findDefaultAppId').andReturn('helloxface');
     });
     afterEach(function() {
         shell.rm('-rf', temp);
@@ -52,7 +53,7 @@ describe('wp8 project handler', function() {
 
     describe('www_dir method', function() {
         it('should return cordova-wp8 project www location using www_dir', function() {
-            expect(wp8.www_dir(path.sep)).toEqual(path.sep + 'www');
+            expect(wp8.www_dir(path.sep)).toEqual(path.sep + 'xface3' + path.sep + 'helloxface');
         });
     });
     describe('package_name method', function() {

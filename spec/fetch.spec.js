@@ -30,6 +30,7 @@ describe('fetch', function() {
             mkdir = spyOn(shell, 'mkdir');
             cp = spyOn(shell, 'cp');
             save_metadata = spyOn(metadata, 'save_fetch_metadata');
+            spyOn(fs, 'lstatSync').andReturn({'isSymbolicLink': function() {return false;}});
         });
 
         it('should copy locally-available plugin to plugins directory', function(done) {

@@ -30,6 +30,7 @@ var valid_source = platformTag.findall('./source-file'),
     valid_assets = plugin_et.findall('./asset'),
     valid_headers = platformTag.findall('./header-file'),
     valid_resources = platformTag.findall('./resource-file'),
+    valid_custom_frameworks = platformTag.findall('./framework[@custom="true"]'),
     valid_frameworks = platformTag.findall('./framework'),
     plist_els = platformTag.findall('./plugins-plist'),
     dummy_configs = platformTag.findall('./config-file');
@@ -52,6 +53,7 @@ var invalid_assets = plugin_et.findall('./asset');
 var invalid_source = platformTag.findall('./source-file');
 var invalid_headers = platformTag.findall('./header-file');
 var invalid_resources = platformTag.findall('./resource-file');
+var invalid_custom_frameworks = platformTag.findall('./framework[@custom="true"]');
 var invalid_frameworks = platformTag.findall('./framework');
 
 xml_path = path.join(plistplugin, 'plugin.xml');
@@ -75,6 +77,7 @@ describe('ios project handler', function() {
     beforeEach(function() {
         shell.mkdir('-p', temp);
         shell.mkdir('-p', plugins_dir);
+        spyOn(common, 'findDefaultAppId').andReturn('helloxface');
     });
     afterEach(function() {
         shell.rm('-rf', temp);
@@ -82,7 +85,7 @@ describe('ios project handler', function() {
 
     describe('www_dir method', function() {
         it('should return cordova-ios project www location using www_dir', function() {
-            expect(ios.www_dir(path.sep)).toEqual(path.sep + 'www');
+            expect(ios.www_dir(path.sep)).toEqual(path.sep + 'xface3' + path.sep + 'helloxface');
         });
     });
 
@@ -240,6 +243,39 @@ describe('ios project handler', function() {
                 expect(spy).toHaveBeenCalledWith('-R', path.join(dummyplugin, 'src', 'ios', 'DummyPlugin.bundle'), path.join(temp, 'SampleApp', 'Resources'));
             });
         });
+        describe('of <framework custom="true"> elements', function() {
+            beforeEach(function() {
+                shell.cp('-rf', ios_config_xml_project, temp);
+            });
+            it('should throw if framework src cannot be found', function() {
+                var frameworks = copyArray(invalid_custom_frameworks);
+                expect(function() {
+                    ios['framework'].install(frameworks[0], faultyplugin, temp, proj_files);
+                }).toThrow('cannot find "' + path.resolve(faultyplugin, 'src/ios/NonExistantCustomFramework.framework') + '" ios <framework>');
+            });
+            it('should throw if framework target already exists', function() {
+                var frameworks = copyArray(valid_custom_frameworks);
+                var target = path.join(temp, 'Custom.framework');
+                shell.mkdir('-p', path.dirname(target));
+                fs.writeFileSync(target, 'some bs', 'utf-8');
+                expect(function() {
+                    ios['framework'].install(frameworks[0], dummyplugin, temp, proj_files);
+                }).toThrow('target destination "' + target + '" already exists');
+            });
+            it('should call into xcodeproj\'s addFramework', function() {
+                var frameworks = copyArray(valid_custom_frameworks);
+                var spy = spyOn(proj_files.xcode, 'addFramework');
+                ios['framework'].install(frameworks[0], dummyplugin, temp, proj_files);
+                expect(spy).toHaveBeenCalledWith(path.join(temp, 'Custom.framework'), {customFramework:true});
+            });
+            it('should cp the file to the right target location', function() {
+                var frameworks = copyArray(valid_custom_frameworks);
+                var spy = spyOn(shell, 'cp');
+                ios['framework'].install(frameworks[0], dummyplugin, temp, proj_files);
+                expect(spy).toHaveBeenCalledWith('-R', path.join(dummyplugin, 'src', 'ios', 'Custom.framework'),
+                                                 temp);
+            });
+        });
     });
 
     describe('uninstallation', function() {
@@ -329,6 +365,25 @@ describe('ios project handler', function() {
 
                 ios['resource-file'].uninstall(resources[0], temp, proj_files);
                 expect(spy).toHaveBeenCalledWith('-rf', path.join(temp, 'SampleApp', 'Resources', 'DummyPlugin.bundle'));
+            });
+        });
+        describe('of <framework custom="true"> elements', function() {
+            beforeEach(function() {
+                shell.cp('-rf', ios_config_xml_project, temp);
+            });
+            it('should call into xcodeproj\'s removeFramework', function(){
+                var frameworks = copyArray(valid_custom_frameworks);
+                var spy = spyOn(proj_files.xcode, 'removeFramework');
+
+                ios['framework'].uninstall(frameworks[0], temp, proj_files);
+                expect(spy).toHaveBeenCalledWith(path.join(temp, 'Custom.framework'), {customFramework:true});
+            });
+            it('should rm the file from the right target location', function(){
+                var frameworks = copyArray(valid_custom_frameworks);
+                var spy = spyOn(shell, 'rm');
+
+                ios['framework'].uninstall(frameworks[0], temp, proj_files);
+                expect(spy).toHaveBeenCalledWith('-rf', path.join(temp, 'Custom.framework'));
             });
         });
     });

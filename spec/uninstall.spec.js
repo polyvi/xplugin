@@ -4,6 +4,7 @@ var uninstall = require('../src/uninstall'),
     dependencies = require('../src/util/dependencies'),
     xml_helpers = require('../src/util/xml-helpers'),
     plugins = require('../src/util/plugins.js'),
+    common  = require('../src/platforms/common'),
     plugman = require('../plugman'),
     fs      = require('fs'),
     os      = require('osenv'),
@@ -47,6 +48,7 @@ describe('uninstallPlatform', function() {
             top_level_plugins:[]
         });
         done = false;
+        spyOn(common, 'findDefaultAppId').andReturn('helloxface');
     });
     describe('success', function() {
         it('should call prepare after a successful uninstall', function() {
@@ -175,6 +177,7 @@ describe('uninstallPlugin', function() {
         rm = spyOn(shell, 'rm');
         add_to_queue = spyOn(config_changes, 'add_uninstalled_plugin_to_prepare_queue');
         done = false;
+        spyOn(fs, 'lstatSync').andReturn({'isSymbolicLink': function() {return false;}});
     });
     describe('success', function() {
         it('should remove the plugin directory', function() {
@@ -255,6 +258,7 @@ describe('uninstall', function() {
         rm = spyOn(shell, 'rm');
         add_to_queue = spyOn(config_changes, 'add_uninstalled_plugin_to_prepare_queue');
         done = false;
+        spyOn(common, 'findDefaultAppId').andReturn('helloxface');
     });
     describe('success', function() {
         it('should call prepare after a successful uninstall', function() {

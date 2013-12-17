@@ -55,7 +55,7 @@ module.exports.uninstallPlugin = function(id, plugins_dir) {
         var plugin_dir = path.join(plugins_dir, id);
         if (!fs.existsSync(plugin_dir)) return;
         if(fs.lstatSync(plugin_dir).isSymbolicLink()) fs.unlinkSync(plugin_dir);
-	else shell.rm('-rf', plugin_dir);
+        else shell.rm('-rf', plugin_dir);
         require('../plugman').emit('verbose', id + ' deleted.');
     };
 
@@ -151,6 +151,7 @@ function handleUninstall(actions, platform, plugin_id, plugin_et, project_dir, w
             headerFiles = platformTag.findall('./header-file'),
             libFiles = platformTag.findall('./lib-file'),
             resourceFiles = platformTag.findall('./resource-file');
+            frameworkFiles = platformTag.findall('./framework[@custom="true"]');
         assets = assets.concat(platformTag.findall('./asset'));
 
         var proguardConfig = platformTag.find('./proguard-config'),
@@ -168,6 +169,11 @@ function handleUninstall(actions, platform, plugin_id, plugin_et, project_dir, w
 
         resourceFiles && resourceFiles.forEach(function(resource) {
             actions.push(actions.createAction(handler["resource-file"].uninstall, [resource, project_dir], handler["resource-file"].install, [resource, plugin_dir, project_dir]));
+        });
+        
+        // CB-5238 custom frameworks only 
+        frameworkFiles && frameworkFiles.forEach(function(framework) {
+            actions.push(actions.createAction(handler["framework"].uninstall, [framework, project_dir], handler["framework"].install, [framework, plugin_dir, project_dir]));
         });
 
         libFiles && libFiles.forEach(function(source) {
@@ -200,7 +206,7 @@ function handleUninstall(actions, platform, plugin_id, plugin_et, project_dir, w
         // queue up the plugin so prepare can remove the config changes
         config_changes.add_uninstalled_plugin_to_prepare_queue(plugins_dir, path.basename(plugin_dir), platform, is_top_level);
         // call prepare after a successful uninstall
-        require('./../plugman').prepare(project_dir, platform, plugins_dir);
+        require('./../plugman').prepare(project_dir, platform, plugins_dir, www_dir);
     });
 }
 

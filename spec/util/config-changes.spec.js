@@ -114,7 +114,7 @@ describe('config-changes module', function() {
         });
         it('should return the json file if it exists', function() {
             var filepath = path.join(plugins_dir, 'android.json');
-            var json = {prepare_queue:{installed:[],uninstalled:[]},config_munge:{somechange:"blah"},installed_plugins:{}};
+            var json = {prepare_queue:{installed:[],uninstalled:[]},config_munge:{somechange:"blah"},installed_plugins:{},extra_config:{}};
             fs.writeFileSync(filepath, JSON.stringify(json), 'utf-8');
             var cfg = configChanges.get_platform_json(plugins_dir, 'android');
             expect(JSON.stringify(json)).toEqual(JSON.stringify(cfg));
@@ -214,6 +214,7 @@ describe('config-changes module', function() {
                 expect(munge['framework']['libsqlite3.dylib']['false']).toBeDefined();
                 expect(munge['framework']['social.framework']['true']).toBeDefined();
                 expect(munge['framework']['music.framework']['false']).toBeDefined();
+                expect(munge['framework']['Custom.framework']).not.toBeDefined();
             });
         });
     });
@@ -313,6 +314,7 @@ describe('config-changes module', function() {
                     expect(xcode_add).toHaveBeenCalledWith('libsqlite3.dylib', {weak:false});
                     expect(xcode_add).toHaveBeenCalledWith('social.framework', {weak:true});
                     expect(xcode_add).toHaveBeenCalledWith('music.framework', {weak:false});
+                    expect(xcode_add).not.toHaveBeenCalledWith('Custom.framework');
                 });
             });
             describe('of <plugins-plist> elements', function() {

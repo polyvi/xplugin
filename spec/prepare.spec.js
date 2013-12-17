@@ -6,13 +6,14 @@ var platforms = require('../src/platforms'),
     shell   = require('shelljs'),
     config_changes = require('../src/util/config-changes'),
     xml_helpers = require('../src/util/xml-helpers'),
+    common  = require('../src/platforms/common'),
     temp    = __dirname,
     childbrowser = 'ChildBrowser',
     dummyplugin = 'DummyPlugin',
     androidplugin = 'AndroidJS',
     plugins_dir = path.join(temp, 'plugins');
 var json = path.join(temp, 'assets', 'www', 'cordova_plugins.json');
-var js = path.join(temp, 'assets', 'www', 'cordova_plugins.js');
+var js = path.join(temp, 'assets', 'xface3', 'helloxface', 'cordova_plugins.js');
 
 describe('prepare', function() {
     var proc, platform_json, write, stat, read, parseET, mkdir, rm;
@@ -36,9 +37,16 @@ describe('prepare', function() {
             findall:findall,
             find:find
         });
+        spyOn(common, 'getInstalledApps').andReturn(['helloxface']);
     });
     it('should create a cordova_plugins.js file', function() {
         prepare(temp, 'android', plugins_dir);
+        expect(write).toHaveBeenCalledWith(js, jasmine.any(String), 'utf-8');
+    });
+    it('should create cordova_plugins.js file in a custom www directory', function() {
+        var custom_www = path.join(temp, 'assets', 'custom_www'),
+            js = path.join(temp, 'assets', 'custom_www', 'cordova_plugins.js');
+        prepare(temp, 'android', plugins_dir, custom_www);
         expect(write).toHaveBeenCalledWith(js, jasmine.any(String), 'utf-8');
     });
     describe('handling of js-modules', function() {
@@ -54,12 +62,12 @@ describe('prepare', function() {
         });
         it('should create a plugins directory in an application\'s www directory', function() {
             prepare(temp, 'android', plugins_dir);
-            expect(mkdir).toHaveBeenCalledWith('-p',path.join(temp, 'assets', 'www', 'plugins'));
+            expect(mkdir).toHaveBeenCalledWith('-p',path.join(temp, 'assets', 'xface3', 'helloxface', 'plugins'));
         });
         it('should write out one file per js module', function() {
             prepare(temp, 'android', plugins_dir);
-            expect(write).toHaveBeenCalledWith(path.join(temp, 'assets', 'www', 'plugins', 'someid', 'somedir'), jasmine.any(String), 'utf-8');
-            expect(write).toHaveBeenCalledWith(path.join(temp, 'assets', 'www', 'plugins', 'someid', 'someotherdir'), jasmine.any(String), 'utf-8');
+            expect(write).toHaveBeenCalledWith(path.join(temp, 'assets', 'xface3', 'helloxface', 'plugins', 'someid', 'somedir'), jasmine.any(String), 'utf-8');
+            expect(write).toHaveBeenCalledWith(path.join(temp, 'assets', 'xface3', 'helloxface', 'plugins', 'someid', 'someotherdir'), jasmine.any(String), 'utf-8');
         });
         describe('uninstallation/removal', function() {
             var existsSync;
@@ -73,7 +81,7 @@ describe('prepare', function() {
             });
             it('should remove any www/plugins directories related to plugins being queued for removal', function() {
                 prepare(temp, 'android', plugins_dir);
-                expect(rm).toHaveBeenCalledWith('-rf', path.join(temp, 'assets', 'www', 'plugins', 'nickelback'));
+                expect(rm).toHaveBeenCalledWith('-rf', path.join(temp, 'assets', 'xface3', 'helloxface', 'plugins', 'nickelback'));
             });
         });
     });
