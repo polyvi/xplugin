@@ -121,7 +121,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir, www_
     var moduleObjects = [];
     var pluginMetadata = {};
     var installedApps = common.getInstalledApps(project_dir, platform),
-        xface3Dir = path.dirname(wwwDir);
+        xface3Dir = path.dirname(platform_modules[platform].www_dir(project_dir));
     require('../plugman').emit('verbose', 'Iterating over installed plugins:', plugins);
 
     plugins && plugins.forEach(function(plugin) {
@@ -214,17 +214,18 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir, www_
     require('../plugman').emit('verbose', 'Writing out cordova_plugins.js...');
     fs.writeFileSync(path.join(wwwDir, 'cordova_plugins.js'), final_contents, 'utf-8');
 
-    var defaultAppPath = path.join(xface3Dir, defaultAppId);
+    // install plugin js into all app folders
     installedApps.forEach(function(appId) {
-        if(appId == defaultAppId) return;
-
-        // install plugin js to non-default app
         var targetAppPath = path.join(xface3Dir, appId);
-        shell.cp('-f', path.join(defaultAppPath, 'cordova_plugins.js'), targetAppPath);
-        shell.cp('-f', path.join(defaultAppPath, 'xface.js'), targetAppPath);
+        if(wwwDir == targetAppPath) {
+            return;
+        }
+        var pluginsPath = path.join(wwwDir, 'plugins'),
+            pluginRegistryPath = path.join(wwwDir, 'cordova_plugins.js');
+        fs.existsSync(pluginRegistryPath) && shell.cp('-f', path.join(wwwDir, pluginRegistryPath), targetAppPath);
         var targetPluginJsDir = path.join(targetAppPath, 'plugins');
         fs.existsSync(targetPluginJsDir) && shell.rm('-rf', targetPluginJsDir);
-        shell.cp('-rf', path.join(defaultAppPath, 'plugins'), targetAppPath);
+        fs.existsSync(pluginsPath) && shell.cp('-rf', pluginsPath, targetAppPath);
     });
 
     if(platform == 'wp7' || platform == "windows8") {
