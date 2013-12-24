@@ -37,7 +37,7 @@
   "devDependencies": {
     "jasmine-node": "1.7.0"
   },
-  "bin" : { "plugman" : "./main.js" },
+  "bin" : { "xplugin" : "./main.js" },
   "scripts": {
     "test": "jasmine-node --color spec"
   },
