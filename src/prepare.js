@@ -222,7 +222,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir, www_
         }
         var pluginsPath = path.join(wwwDir, 'plugins'),
             pluginRegistryPath = path.join(wwwDir, 'cordova_plugins.js');
-        fs.existsSync(pluginRegistryPath) && shell.cp('-f', path.join(wwwDir, pluginRegistryPath), targetAppPath);
+        fs.existsSync(pluginRegistryPath) && shell.cp('-f', pluginRegistryPath, targetAppPath);
         var targetPluginJsDir = path.join(targetAppPath, 'plugins');
         fs.existsSync(targetPluginJsDir) && shell.rm('-rf', targetPluginJsDir);
         fs.existsSync(pluginsPath) && shell.cp('-rf', pluginsPath, targetAppPath);
