@@ -155,7 +155,7 @@ module.exports = {
                            );
 
         config_files = config_files.filter(function (val) {
-            return !(/^build\//.test(val)) && !(/\/www\/config.xml$/.test(val));
+            return !(/build\//i.test(val)) && !(/\/xface3\/config.xml$/.test(val));
         });
 
         if (config_files.length === 0) {
