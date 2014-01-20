@@ -130,7 +130,7 @@ function findPluginById(repoSet, pluginId) {
     var pluginPath = null;
     if (fs.existsSync(repoSet)) {
         fs.readdirSync(repoSet).every(function (fileName) {
-            if(fileName.match(/-(extension|plugin)-/)) {
+            if(fileName.match(/-(extension|plugin|extra)-/)) {
                 var xml = xml_helpers.parseElementtreeSync(path.join(repoSet, fileName, 'plugin.xml'));
                 if(pluginId == xml.getroot().attrib.id) {
                     pluginPath = path.join(repoSet, fileName);
