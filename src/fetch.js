@@ -127,17 +127,34 @@ module.exports = function fetchPlugin(plugin_dir, plugins_dir, options) {
 };
 
 function findPluginById(repoSet, pluginId) {
+    if (!fs.existsSync(repoSet)) {
+        return null;
+    }
     var pluginPath = null;
-    if (fs.existsSync(repoSet)) {
-        fs.readdirSync(repoSet).every(function (fileName) {
-            if(fileName.match(/-(extension|plugin|extra)-/)) {
-                var xml = xml_helpers.parseElementtreeSync(path.join(repoSet, fileName, 'plugin.xml'));
-                if(pluginId == xml.getroot().attrib.id) {
-                    pluginPath = path.join(repoSet, fileName);
-                    return false;
-                }
-            }
+
+    function isPluginMatched(pluginDir) {
+        var pluginXml = path.join(pluginDir, 'plugin.xml');
+        if(!fs.existsSync(pluginXml)) return false;
+
+        var xml = xml_helpers.parseElementtreeSync(pluginXml);
+        if(pluginId == xml.getroot().attrib.id) {
+            pluginPath = pluginDir;
             return true;
+        }
+        return false;
+    }
+
+    fs.readdirSync(repoSet).every(function (fileName) {
+        var subPath = path.join(repoSet, fileName);
+        return !(fileName.match(/-(extension|plugin|extra)-/) && isPluginMatched(subPath));
+    });
+
+    // 查找cordova-plugins下是否有匹配的插件
+    if(!pluginPath) {
+        var labPluginSetPath = path.join(repoSet, 'cordova-plugins');
+        fs.existsSync(labPluginSetPath) && fs.readdirSync(labPluginSetPath).every(function(fileName) {
+            var subPath = path.join(labPluginSetPath, fileName);
+            return !isPluginMatched(subPath);
         });
     }
     return pluginPath;
