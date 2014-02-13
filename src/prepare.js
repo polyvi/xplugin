@@ -167,7 +167,7 @@ module.exports = function handlePrepare(project_dir, platform, plugins_dir, www_
     
                 var fsPath = path.join.apply(path, pathParts);
                 var scriptContent = fs.readFileSync(path.join(pluginDir, fsPath), 'utf-8');
-                scriptContent = 'cordova.define("' + moduleName + '", function(require, exports, module) {' + scriptContent + '});\n';
+                scriptContent = 'cordova.define("' + moduleName + '", function(require, exports, module) { ' + scriptContent + '\n});\n';
                 fs.writeFileSync(path.join(platformPluginsDir, plugin_id, fsPath), scriptContent, 'utf-8');
                 if(platform == 'wp7' || platform == "windows8") {
                     wp_csproj.addSourceFile(path.join('xface3', defaultAppId, 'plugins', plugin_id, fsPath));
