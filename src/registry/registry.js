@@ -9,7 +9,7 @@ var npm = require('npm'),
     rc = require('rc'),
     Q = require('q'),
     home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE,
-    plugmanConfigDir = path.resolve(home, '.plugman'),
+    plugmanConfigDir = path.resolve(home, '.xplugin'),
     plugmanCacheDir = path.resolve(plugmanConfigDir, 'cache');
 
 /**
@@ -150,7 +150,7 @@ module.exports = {
         return initSettings()
         .then(function(settings) {
             var p = manifest.generatePackageJsonFromPluginXml(args[0]);
-            p.then(function() {
+            return p.then(function() {
                 return Q.ninvoke(npm, 'load', settings);
             }).then(function() {
                 return Q.ninvoke(npm.commands, 'publish', args)
@@ -170,7 +170,7 @@ module.exports = {
         .then(function(settings) {
             return Q.ninvoke(npm, 'load', settings);
         }).then(function() {
-            return Q.ninvoke(npm.commands, 'search', args, true);
+            return Q.ninvoke(npm.commands, 'search', args, false);
         });
     },
 
@@ -236,11 +236,11 @@ function initSettings() {
 
     settings =
     module.exports.settings =
-    rc('plugman', {
+    rc('xplugin', {
          cache: plugmanCacheDir,
          force: true,
-         registry: 'http://registry.cordova.io',
-         logstream: fs.createWriteStream(path.resolve(plugmanConfigDir, 'plugman.log')),
+         registry: 'http://www.polyvi.net:5984/api/_design/scratch/_rewrite',
+         logstream: fs.createWriteStream(path.resolve(plugmanConfigDir, 'xplugin.log')),
          userconfig: path.resolve(plugmanConfigDir, 'config')
     });
     return Q(settings);

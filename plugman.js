@@ -82,7 +82,13 @@ plugman.commands =  {
         });
     },
     'owner'   : function(cli_opts) {
-        plugman.owner(cli_opts.argv.remain);
+        plugman.owner(cli_opts.argv.remain, function(result) {
+            if(result instanceof Error) {
+                throw result;
+            } else {
+                console.log(JSON.stringify(result));
+            }
+        });
     },
     'install'  : function(cli_opts) {
         if(!cli_opts.platform || !cli_opts.project || !cli_opts.plugin) {
@@ -119,18 +125,20 @@ plugman.commands =  {
 
     'search'   : function(cli_opts) {
         plugman.search(cli_opts.argv.remain, function(err, plugins) {
-            if (err) throw err;
+            if (err instanceof Error) throw err;
             else {
+                plugins = err;
                 for(var plugin in plugins) {
-                    console.log(plugins[plugin].name, '-', plugins[plugin].description || 'no description provided');
+                    console.log(plugins[plugin].name, '-', plugins[plugin].description || 'no description provided'); 
                 }
             }
         });
     },
     'info'     : function(cli_opts) {
         plugman.info(cli_opts.argv.remain, function(err, plugin_info) {
-            if (err) throw err;
+            if (err instanceof Error) throw err;
             else {
+                plugin_info = err;
                 console.log('name:', plugin_info.name);
                 console.log('version:', plugin_info.version);
                 if (plugin_info.engines) {
