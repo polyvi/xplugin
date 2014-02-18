@@ -127,6 +127,13 @@ function findLocalPlugin(plugin_id, searchpath) {
         var files = fs.readdirSync(searchpath[i]);
         for (var j = 0; j < files.length; j++){
             var plugin_path = path.join(searchpath[i], files[j]);
+
+            if(files[j] == 'cordova-plugin-keyboard') {
+                plugin_path = path.join(searchpath[i], files[j], 'keyboard');
+            } else if(files[j] == 'cordova-plugin-statusbar') {
+                plugin_path = path.join(searchpath[i], files[j], 'statusbar');
+            }
+
             try {
                 var id = readId(plugin_path);
                 if (plugin_id === id) {
