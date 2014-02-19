@@ -239,7 +239,7 @@ function initSettings() {
     rc('xplugin', {
          cache: plugmanCacheDir,
          force: true,
-         registry: 'http://www.polyvi.net:5984/api/_design/scratch/_rewrite',
+         registry: 'http://plugins.polyvi.net:5984/api/_design/scratch/_rewrite',
          logstream: fs.createWriteStream(path.resolve(plugmanConfigDir, 'xplugin.log')),
          userconfig: path.resolve(plugmanConfigDir, 'config')
     });
