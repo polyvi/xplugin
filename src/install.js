@@ -76,7 +76,7 @@ function cleanVersionOutput(version, name){
     var out = version.trim();
     var rc_index = out.indexOf('rc');
     var dev_index = out.indexOf('dev');
-    if (rc_index > -1) {
+    if (rc_index > -1 && out[rc_index - 1] != '-') {
         out = out.substr(0, rc_index) + '-' + out.substr(rc_index);
     }
 
