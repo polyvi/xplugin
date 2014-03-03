@@ -36,6 +36,8 @@ module.exports = function(project_dir){
         'xface':
             { 'platform':'*', 'scriptSrc': path.join(project_dir, 'cordova', 'versionx') },
         'xface-ios':
-            { 'platform':'ios', 'scriptSrc': path.join(project_dir, 'cordova', 'versionx') }
+            { 'platform':'ios', 'scriptSrc': path.join(project_dir, 'cordova', 'versionx') },
+        'xface-android':
+            { 'platform':'android', 'scriptSrc': path.join(project_dir, 'cordova', 'versionx') }
     }
 };
