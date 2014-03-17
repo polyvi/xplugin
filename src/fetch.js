@@ -130,8 +130,6 @@ function findLocalPlugin(plugin_id, searchpath) {
 
             if(files[j] == 'cordova-plugin-keyboard') {
                 plugin_path = path.join(searchpath[i], files[j], 'keyboard');
-            } else if(files[j] == 'cordova-plugin-statusbar') {
-                plugin_path = path.join(searchpath[i], files[j], 'statusbar');
             }
 
             try {
