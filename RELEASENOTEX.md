@@ -707,3 +707,12 @@
  *  initial package.json
  *  liftoff
  *  提交reviewboard配置文件
+
+
+## 3.2.0-0.0.4 (Wed Mar 19 2014)
+
+
+ *  removed hack for plugin statusbar, since it got promoted to core plugin now
+ *  将keyboard和statusbar两个插件的id加入whitelist，以使其能够被publish到plugin registry上
+ *  added xface-android to default engine
+ *  added xface-ios to default engines

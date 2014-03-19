@@ -2,7 +2,7 @@
   "author": "chenxy <chenxy@polyvi.com>",
   "name": "xplugin",
   "description": "install/uninstall xFace plugins",
-  "version": "3.2.0-0.0.3",
+  "version": "3.2.0-0.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/polyvi/xplugin.git"
