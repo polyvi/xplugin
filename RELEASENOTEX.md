@@ -716,3 +716,9 @@
  *  将keyboard和statusbar两个插件的id加入whitelist，以使其能够被publish到plugin registry上
  *  added xface-android to default engine
  *  added xface-ios to default engines
+
+
+## 3.2.0 (Thu Apr 03 2014)
+
+
+ *  修改keyboard插件在whitelist中的id名称
