@@ -41,7 +41,7 @@ module.exports = function fetchPlugin(plugin_src, plugins_dir, options) {
     }
 
     // If it looks like a network URL, git clone it.
-    if ( uri.protocol && uri.protocol != 'file:' && !plugin_src.match(/^\w+:\\/)) {
+    if ( uri.protocol && uri.protocol != 'file:' && uri.protocol != 'c:' && !plugin_src.match(/^\w+:\\/)) {
         require('../plugman').emit('log', 'Fetching plugin "' + plugin_src + '" via git clone');
         if (options.link) {
             return Q.reject(new Error('--link is not supported for git URLs'));
@@ -67,9 +67,6 @@ module.exports = function fetchPlugin(plugin_src, plugins_dir, options) {
     } else {
         // If it's not a network URL, it's either a local path or a plugin ID.
 
-        // NOTE: Can't use uri.href here as it will convert spaces to %20 and make path invalid.
-        // Use original plugin_src value instead.
-
         var p,  // The Q promise to be returned.
             linkable = true,
             plugin_dir = path.join(plugin_src, options.subdir);
@@ -82,7 +79,7 @@ module.exports = function fetchPlugin(plugin_src, plugins_dir, options) {
             var local_dir = findLocalPlugin(plugin_src, options.searchpath);
             if (local_dir) {
                 p = Q(local_dir);
-                require('../plugman').emit('log', 'Found plugin "' + plugin_src + '" at: ' + local_dir);
+                require('../plugman').emit('verbose', 'Found ' + plugin_src + ' at ' + local_dir);
             } else {
                 // If not found in local search path, fetch from the registry.
                 linkable = false;
@@ -101,10 +98,8 @@ module.exports = function fetchPlugin(plugin_src, plugins_dir, options) {
     }
 };
 
-
 function readId(dir) {
     var xml_path = path.join(dir, 'plugin.xml');
-    require('../plugman').emit('verbose', 'Fetch is reading plugin.xml from location "' + xml_path + '"...');
     var et = xml_helpers.parseElementtreeSync(path.join(dir, 'plugin.xml'));
     var plugin_id = et.getroot().attrib.id;
     return plugin_id;
@@ -121,25 +116,35 @@ function checkID(expected_id, dir) {
     return dir;
 }
 
+var idCache = Object.create(null);
 // Look for plugin in local search path.
 function findLocalPlugin(plugin_id, searchpath) {
-    for(var i = 0; i < searchpath.length; i++){
+    function tryPath(p) {
+        if (!(p in idCache)) {
+            var id = null;
+            if (fs.existsSync(path.join(p, 'plugin.xml'))) {
+                id = readId(p);
+            }
+            idCache[p] = id;
+        }
+        return (plugin_id === idCache[p]);
+    }
+
+    for (var i = 0; i < searchpath.length; i++) {
+        // Allow search path to point right to a plugin.
+        if (tryPath(searchpath[i])) {
+            return searchpath[i];
+        }
         var files = fs.readdirSync(searchpath[i]);
-        for (var j = 0; j < files.length; j++){
-            var plugin_path = path.join(searchpath[i], files[j]);
+        for (var j = 0; j < files.length; j++) {
+            var pluginPath = path.join(searchpath[i], files[j]);
 
             if(files[j] == 'cordova-plugin-keyboard') {
                 plugin_path = path.join(searchpath[i], files[j], 'keyboard');
             }
 
-            try {
-                var id = readId(plugin_path);
-                if (plugin_id === id) {
-                    return plugin_path;
-                }
-            }
-            catch(err) {
-                require('../plugman').emit('verbose', 'Error while trying to read plugin.xml from ' + plugin_path);
+            if (tryPath(pluginPath)) {
+                return pluginPath;
             }
         }
     }
@@ -154,13 +159,13 @@ function copyPlugin(plugin_dir, plugins_dir, link) {
     if(fs.existsSync(dest) && fs.lstatSync(dest).isSymbolicLink()) fs.unlinkSync(dest);
     else shell.rm('-rf', dest);
     if (link) {
-        require('../plugman').emit('verbose', 'Symlinking from location "' + plugin_dir + '" to location "' + dest + '"');
+        require('../plugman').emit('verbose', 'Linking plugin "' + plugin_dir + '" => "' + dest + '"');
         // for `ln -s` command, when src path is relative, only the src path is relative to the target file/folder,
         // then the link file is valid, so we use absolute path for src path.
         fs.symlinkSync(path.resolve(plugin_dir), dest, 'dir');
     } else {
         shell.mkdir('-p', dest);
-        require('../plugman').emit('verbose', 'Copying from location "' + plugin_dir + '" to location "' + dest + '"');
+        require('../plugman').emit('verbose', 'Copying plugin "' + plugin_dir + '" => "' + dest + '"');
         shell.cp('-R', path.join(plugin_dir, '*') , dest);
     }
 

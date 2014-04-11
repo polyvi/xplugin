@@ -80,3 +80,34 @@ Manage owners
     $ xplugin owner ls org.apache.cordova.core.file
     $ xplugin owner add username org.apache.cordova.core.file
     $ xplugin owner rm username org.apache.cordova.core.file
+
+Create A Plugin
+---------------
+
+    $ xplugin create --name <Plugin Name> --plugin_id <Plugin ID> --plugin_version <Plugin Version> [--path <Directory Path>] [--variable NAME=VALUE]
+
+Parameters:
+
+ - <Plugin Name>: A Name for a Plugin
+ - <Plugin ID>: An ID for the plugin, ex: org.bar.foo
+ - <Plugin Version>: A version for the plugin, ex: 0.0.0
+ - variable NAME=VALUE: Extra variables such as description or Author
+
+Add a Platform to a Plugin
+--------------------------
+
+    $ xplugin platform add --platform_name <Platform>
+
+Parameters:
+
+- <Platform>: One of android, ios
+
+Remove a Platform from a Plugin
+-------------------------------
+
+    $ xplugin platform remove --platform_name <Platform>
+
+Parameters:
+
+- <Platform>: One of android, ios
+

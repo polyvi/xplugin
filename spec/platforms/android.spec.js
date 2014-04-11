@@ -81,7 +81,7 @@ describe('android project handler', function() {
                 var s = spyOn(common, 'copyFile');
 
                 android['resource-file'].install(valid_resources[0], dummyplugin, temp);
-                expect(s).toHaveBeenCalledWith(dummyplugin, 'android-resource.xml', temp, 'res/xml/dummy.xml');
+                expect(s).toHaveBeenCalledWith(dummyplugin, 'android-resource.xml', temp, path.normalize('res/xml/dummy.xml'));
             });
         });
         describe('of <source-file> elements', function() {
@@ -92,13 +92,13 @@ describe('android project handler', function() {
             it('should copy stuff from one location to another by calling common.copyFile', function() {
                 var source = copyArray(valid_source);
                 var s = spyOn(common, 'copyFile');
-                android['source-file'].install(source[0], dummyplugin, temp); 
+                android['source-file'].install(source[0], dummyplugin, temp);
                 expect(s).toHaveBeenCalledWith(dummyplugin, 'src/android/DummyPlugin.java', temp, path.join('src', 'com', 'phonegap', 'plugins', 'dummyplugin', 'DummyPlugin.java'));
             });
             it('should throw if source file cannot be found', function() {
                 var source = copyArray(invalid_source);
                 expect(function() {
-                    android['source-file'].install(source[0], faultyplugin, temp); 
+                    android['source-file'].install(source[0], faultyplugin, temp);
                 }).toThrow('"' + path.resolve(faultyplugin, 'src/android/NotHere.java') + '" not found!');
             });
             it('should throw if target file already exists', function() {
@@ -110,7 +110,7 @@ describe('android project handler', function() {
 
                 var source = copyArray(valid_source);
                 expect(function() {
-                    android['source-file'].install(source[0], dummyplugin, temp); 
+                    android['source-file'].install(source[0], dummyplugin, temp);
                 }).toThrow('"' + target + '" already exists!');
             });
         });
@@ -138,7 +138,7 @@ describe('android project handler', function() {
                 var s = spyOn(common, 'removeFile');
                 android['resource-file'].install(valid_resources[0], dummyplugin, temp);
                 android['resource-file'].uninstall(valid_resources[0], temp, dummy_id);
-                expect(s).toHaveBeenCalledWith(temp, 'res/xml/dummy.xml');
+                expect(s).toHaveBeenCalledWith(temp, path.normalize('res/xml/dummy.xml'));
             });
         });
         describe('of <source-file> elements', function() {

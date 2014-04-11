@@ -75,7 +75,7 @@ describe('uninstallPlatform', function() {
             });
             waitsFor(function() { return done; }, 'promise never resolved', 500);
             runs(function() {
-                expect(actions_push.calls.length).toEqual(5);
+                expect(actions_push.calls.length).toEqual(7);
                 expect(c_a).toHaveBeenCalledWith(jasmine.any(Function), [jasmine.any(Object), temp, dummy_id], jasmine.any(Function), [jasmine.any(Object), path.join(plugins_dir, dummyplugin), temp, dummy_id]);
                 expect(proc).toHaveBeenCalled();
             });
@@ -285,7 +285,7 @@ describe('uninstall', function() {
             });
             waitsFor(function() { return done; }, 'promise never resolved', 500);
             runs(function() {
-                expect(actions_push.calls.length).toEqual(5);
+                expect(actions_push.calls.length).toEqual(7);
                 expect(c_a).toHaveBeenCalledWith(jasmine.any(Function), [jasmine.any(Object), temp, dummy_id], jasmine.any(Function), [jasmine.any(Object), path.join(plugins_dir, dummyplugin), temp, dummy_id]);
                 expect(proc).toHaveBeenCalled();
             });

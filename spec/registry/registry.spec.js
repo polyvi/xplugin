@@ -142,7 +142,7 @@ describe('registry', function() {
             runs(function() {
                 expect(done).toBe(true);
                 expect(fakeLoad).toHaveBeenCalledWith(registry.settings, jasmine.any(Function));
-                expect(fakeNPMCommands.search).toHaveBeenCalledWith(params, true, jasmine.any(Function));
+                expect(fakeNPMCommands.search).toHaveBeenCalledWith(params, false, jasmine.any(Function));
             });
         });
     });

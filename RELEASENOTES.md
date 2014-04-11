@@ -7,9 +7,9 @@
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,11 +20,35 @@
 -->
 # Cordova-plugman Release Notes
 
+### 0.20.2 (Mar 3, 2014)
+* CB-6151 Fix exception when adding a new platform to a CLI project
+
+### 0.20.1 (Feb 28, 2014)
+* CB-6124 Make `cordova plugin remove` resilient to a missing plugin directory
+* CB-6028 Protect against cyclic dependencies in install
+* CB-6128 Treat windows c: absolute paths like file:
+* CB-6123 Fix crash in handleUninstall introduces by recent action-stack refactoring
+* CB-6122 Fix exception on uninstall due to incorrect require() path.
+
+### 0.20.0 (Feb 26, 2014) <-- Never released on npm due to CB-6123
+* CB-4886 Added "plugman create" command
+* CB-5885 Speed-up adding multiple plugins with plugman
+* CB-5647 Move <assets> copying from install to prepare
+* CB-5804 Include platform tag information when publishing plugins
+* CB-6076 Logging tweaks to be less verbose.
+* CB-6088 FFOS: Look for config.xml in www_dir and in project_dir
+* Win8/WP: Added SDKReference support via 'lib-file' tags
+* Win8/WP: Remove ability to add .dll as content - it should be a framework/reference
+* Win8/WP: Added ability to add+remove ref to .winmd files
+* CB-6025 iOS: Do not add static libraries (.a) to source files
+* CB-5017 Accept proxy config for plugman
+* CB-5720 Add resource-file support on Android
+* config-changes.js: Major refactor & introduced reapply_global_munge().
+
 ## 0.19.0 (Jan 30, 2014)
-* CB-5804: added repo & issues to plugman publish
+* CB-5804 Added repo & issue information into `plugman publish`
 * CB-5299 Cache pbxproj to avoid re-parsing it for each plugin.
 * Update node-xcode dependency to 0.6.6
-* Bump node-xcode dependency version
 
 ## 0.18.0 (Jan 15, 2014)
 * CB-5770 plugman prepare.js script content wrapping no longer allows ending parens/braces to be commented out from end of line comment
@@ -114,3 +138,4 @@
 - `plugin rm` now doesn't choke when a file is already deleted
 - Fixed some trouble with filesystem paths vs. web paths; improves Windows host support.
 - Projects beginning with `x`, `y`, and `z` now work. [CB-4502](https://issues.apache.org/jira/browse/CB-4502)
+
