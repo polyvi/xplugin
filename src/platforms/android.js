@@ -24,7 +24,7 @@ var fs = require('fs')  // use existsSync in 0.6.x
 
 module.exports = {
     www_dir:function(project_dir) {
-        var defaultAppId = common.findDefaultAppId(project_dir, 'android');
+        var defaultAppId = require('../util/multiapp-helpers').findDefaultAppId(project_dir, 'android');
         return path.join(project_dir, 'assets', 'xface3', defaultAppId);
     },
     // reads the package name out of the Android Manifest file

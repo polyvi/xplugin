@@ -21,7 +21,7 @@ describe('prepare', function() {
         proc = spyOn(config_changes, 'process');
         platform_json = spyOn(config_changes, 'get_platform_json').andReturn({installed_plugins:{},dependent_plugins:{},prepare_queue:{uninstalled:[]}});
         write = spyOn(fs, 'writeFileSync');
-        spyOn(common, 'getInstalledApps').andReturn(['helloxface']);
+        spyOn(require('../src/util/multiapp-helpers'), 'getInstalledApps').andReturn(['helloxface']);
     });
     it('should create cordova_plugins.js file in a custom www directory', function() {
         var custom_www = path.join(temp, 'assets', 'custom_www'),

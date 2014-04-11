@@ -1,8 +1,6 @@
 var shell = require('shelljs'),
     path  = require('path'),
-    fs    = require('fs'),
-    glob  = require('glob'),
-    xml_helpers = require('../util/xml-helpers');
+    fs    = require('fs');
 
 module.exports = {
     // helper for resolving source paths from plugin.xml
@@ -57,30 +55,6 @@ module.exports = {
                 break;
             }
         }
-    },
-    getInstalledApps:function(platformProj, platform) {
-        var configXml = null;
-        if (platform == 'android') {
-            configXml = path.join(platformProj, 'res', 'xml', 'config.xml');
-        } else {
-            var matches = glob.sync(path.join(platformProj, '**', 'config.xml')).filter(function(p) {
-                return /.*xface3.config\.xml/.test(p) == false;
-            });
-            if (matches.length) configXml = matches[0];
-        }
-        var apps = [];
-        if(configXml) {
-            var doc = xml_helpers.parseElementtreeSync(configXml);
-                appTags = doc.findall('./pre_install_packages/app_package');
-            appTags.forEach(function(a) {
-                apps.push(a.attrib['id']);
-            })
-        }
-        return apps;
-    },
-    findDefaultAppId:function(platformProj, platform) {
-        var apps = module.exports.getInstalledApps(platformProj, platform);
-        return apps.length > 0 ? apps[0] : 'helloxface';
     },
     // handle <asset> elements
     asset:{

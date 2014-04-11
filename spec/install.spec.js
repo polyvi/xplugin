@@ -46,7 +46,7 @@ describe('install', function() {
         });
         add_to_queue = spyOn(config_changes, 'add_installed_plugin_to_prepare_queue');
         done = false;
-        spyOn(common, 'findDefaultAppId').andReturn('helloxface');
+        spyOn(require('../src/util/multiapp-helpers'), 'findDefaultAppId').andReturn('helloxface');
     });
     describe('success', function() {
         it('should call prepare after a successful install', function() {

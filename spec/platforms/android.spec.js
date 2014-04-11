@@ -51,7 +51,7 @@ function copyArray(arr) {
 describe('android project handler', function() {
     describe('www_dir method', function() {
         it('should return cordova-android project www location using www_dir', function() {
-            spyOn(common, 'findDefaultAppId').andReturn('helloxface');
+            spyOn(require('../../src/util/multiapp-helpers'), 'findDefaultAppId').andReturn('helloxface');
             expect(android.www_dir(path.sep)).toEqual(path.sep + path.join('assets', 'xface3', 'helloxface'));
         });
     });

@@ -26,7 +26,7 @@ var common = require('./common'),
 
 module.exports = {
     www_dir:function(project_dir) {
-        var defaultAppId = common.findDefaultAppId(project_dir, 'wp8');
+        var defaultAppId = require('../util/multiapp-helpers').findDefaultAppId(project_dir, 'wp8');
         return path.join(project_dir, 'xface3', defaultAppId);
     },
     package_name:function(project_dir) {

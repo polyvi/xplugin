@@ -1,12 +1,13 @@
 var path = require('path'),
     fs = require('fs'),
     shell = require('shelljs'),
-    common = require('../platforms/common');
+    glob  = require('glob'),
+    common = require('../platforms/common'),
+    xml_helpers = require('./xml-helpers');
 
-//TODO: 将common中的getInstalledApps、findDefaultAppId方法移过来
 module.exports = {
     overridePluginJs : function(projectDir, wwwDir, platform) {
-        var installedApps = common.getInstalledApps(projectDir, platform),
+        var installedApps = module.exports.getInstalledApps(projectDir, platform),
             xface3Dir = path.dirname(require('../platforms')[platform].www_dir(projectDir));
 
         // copy plugin js into all app folders
@@ -34,7 +35,7 @@ module.exports = {
         if(isOutsideOfCurrentDir(target)){
             return;
         }
-        var installedApps = common.getInstalledApps(projectDir, platform),
+        var installedApps = module.exports.getInstalledApps(projectDir, platform),
             xface3Dir = path.dirname(require('../platforms')[platform].www_dir(projectDir));
         installedApps.forEach(function(appId) {
             var targetAppPath = path.join(xface3Dir, appId);
@@ -51,13 +52,37 @@ module.exports = {
         if(isOutsideOfCurrentDir(target)){
             return;
         }
-        var installedApps = common.getInstalledApps(projectDir, platform),
+        var installedApps = module.exports.getInstalledApps(projectDir, platform),
             xface3Dir = path.dirname(require('../platforms')[platform].www_dir(projectDir));
         installedApps.forEach(function(appId) {
             var targetAppPath = path.join(xface3Dir, appId);
             common.removeFile(targetAppPath, target);
             common.removeFileF(path.resolve(targetAppPath, 'plugins', plugin_id));
         });
+    },
+    getInstalledApps:function(platformProj, platform) {
+        var configXml = null;
+        if (platform == 'android') {
+            configXml = path.join(platformProj, 'res', 'xml', 'config.xml');
+        } else {
+            var matches = glob.sync(path.join(platformProj, '**', 'config.xml')).filter(function(p) {
+                return /.*xface3.config\.xml/.test(p) == false;
+            });
+            if (matches.length) configXml = matches[0];
+        }
+        var apps = [];
+        if(configXml) {
+            var doc = xml_helpers.parseElementtreeSync(configXml);
+                appTags = doc.findall('./pre_install_packages/app_package');
+            appTags.forEach(function(a) {
+                apps.push(a.attrib['id']);
+            });
+        }
+        return apps;
+    },
+    findDefaultAppId:function(platformProj, platform) {
+        var apps = module.exports.getInstalledApps(platformProj, platform);
+        return apps.length > 0 ? apps[0] : 'helloxface';
     }
 };
 

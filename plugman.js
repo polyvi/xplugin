@@ -76,6 +76,7 @@ addProperty(plugman, 'platform', './src/platform_operation', true);
 addProperty(plugman, 'config_changes', './src/util/config-changes');
 addProperty(plugman, 'platforms', './src/platforms');
 addProperty(plugman, 'common', './src/platforms/common');
+addProperty(plugman, 'multiapp_helpers', './src/util/multiapp-helpers');
 
 plugman.commands =  {
     'config'   : function(cli_opts) {

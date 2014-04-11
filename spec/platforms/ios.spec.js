@@ -78,7 +78,7 @@ describe('ios project handler', function() {
     beforeEach(function() {
         shell.mkdir('-p', temp);
         shell.mkdir('-p', plugins_dir);
-        spyOn(common, 'findDefaultAppId').andReturn('helloxface');
+        spyOn(require('../../src/util/multiapp-helpers'), 'findDefaultAppId').andReturn('helloxface');
     });
     afterEach(function() {
         shell.rm('-rf', temp);

@@ -23,12 +23,11 @@ var path = require('path')
   , xcode = require('xcode')
   , plist = require('plist-with-patches')
   , shell = require('shelljs')
-  , common = require('./common')
   , cachedProjectFiles = {};
 
 module.exports = {
     www_dir:function(project_dir) {
-        var defaultAppId = common.findDefaultAppId(project_dir, 'ios');
+        var defaultAppId = require('../util/multiapp-helpers').findDefaultAppId(project_dir, 'ios');
         return path.join(project_dir, 'xface3', defaultAppId);
     },
     package_name:function(project_dir) {
