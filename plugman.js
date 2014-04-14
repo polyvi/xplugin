@@ -176,7 +176,7 @@ plugman.commands =  {
             return console.log(plugman.help());
         }
         plugman.publish(plugin_path, function(err) {
-            if (err) throw err;
+            if (err instanceof Error) throw err;
             else console.log('Plugin published');
         });
     },

@@ -47,6 +47,10 @@ function generatePackageJsonFromPluginXml(plugin_path) {
     })
     if(!version) return Q.reject(new Error('`version` required'));
 
+    if(version.indexOf('dev') != -1) {
+        return Q.reject(new Error('Current version "' + version + '" is not formal, which can\'t be published.'));
+    }
+
     package_json.version = version;
 
     if(!name) return Q.reject(new Error('`name` is required'));
