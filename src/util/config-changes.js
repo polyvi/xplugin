@@ -431,6 +431,7 @@ function get_platform_json(plugins_dir, platform) {
         var config = {
             prepare_queue:{installed:[], uninstalled:[]},
             config_munge:{},
+            extra_config:{},
             installed_plugins:{},
             dependent_plugins:{}
         };
