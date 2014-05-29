@@ -20,6 +20,32 @@
 -->
 # Cordova-plugman Release Notes
 
+### 0.22.0 (May 09, 2014)
+* Update plugman cli to use cordova-lib
+* Split out cordova-lib: move cordova-plugman files
+
+### 0.21.0 (Apr 03, 2014)
+* CB-6344 Specify after which sibling to add config-changes in plugin.xml
+* CB-6272 Fix subdir bug + tests & meta fetch with a src directory
+* Adding spec for Tizen platform
+* src/platforms.js: Adding tizen.
+* Throw an error when a <dependency> tag is missing `id` attribute.
+* Added org.apache.cordova.statusbar into the registry whitelist.
+* CB-6160 adding plugin fails for Firefoxos.
+* Fix to never remove top-level plugins that are dependencies + tests.
+* Improve dependencies tests by grouping with beforeStart() Fix for dependency cycle / throw error.
+* Refactoring of install & uninstall tests
+* CB-6147 Enable CLI and Plugman with npm shrinkwrap
+* Allow --searchpath to have a delimiter
+* working uninstall for projectReferences
+* projectReference.uninstall has to generate the plugin_dir because it is not passed to uninstall methods
+* CB-5970 added type attribute 'projectReference' to <framework> element to signal addition of dependent project
+* Separate out adding a dependent project from adding a .winmd reference in windows8
+* wip implementing reading guid from 'framework' project
+* CB-6162 Show a better error message when publish fails the whitelist
+* CB-6119 Fix `plugman info` command printing "undefined" always
+* CB-6159 Fix incorrect "success" message when publishing fails.
+
 ### 0.20.2 (Mar 3, 2014)
 * CB-6151 Fix exception when adding a new platform to a CLI project
 
@@ -84,7 +110,7 @@
 * Overhaul dependency uninstallation
 * [CB-4872] - adding in custom semver check for project
 * [CB-4872] - updated paths to version files
-* Update action-stack to avoid static platform detection + test if parseProjectFile is present instea
+* Update action-stack to avoid static platform detection + test if parseProjectFile is present instead
 * Update spec to match new ios parse method name
 * Update references to old ios parse method
 * Rename parse method and add a write method to result + parseIOSProjectFiles --> parseProjectFile +
@@ -102,10 +128,10 @@
 * [CB-4837]: Version 0.12.0. Release notes updated.
 * Rename CHANGELOG.md -> RELEASENOTES.md
 * CB-4492 tracking which of cli or plugman is used to fetch from registry
-* removed unncessary console.logs
+* removed unnecessary console.logs
 * add full ff support to plugman
 * add firefoxos
-* removed unncessary console.logs
+* removed unnecessary console.logs
 * add full ff support to plugman
 * add firefoxos
 * Fix tests broken by lazy module requiring.

@@ -23,9 +23,10 @@ var path = require('path')
     , url = require('url')
     , package = require(path.join(__dirname, 'package'))
     , nopt = require('nopt')
-    , plugins = require('./src/util/plugins')
     , Q = require('q')
-    , plugman = require('./plugman');
+    , help = require('./src/help')
+    , xface_lib = require('xface-lib')
+    , xplugin = xface_lib.xplugin;
 
 var known_opts = { 'platform' : [ 'ios', 'android', 'amazon-fireos', 'blackberry10', 'wp7', 'wp8' , 'windows8', 'firefoxos' ]
         , 'project' : path
@@ -63,26 +64,26 @@ process.on('uncaughtException', function(error) {
 
 // Set up appropriate logging based on events
 if (cli_opts.debug) {
-    plugman.on('verbose', console.log);
+    xplugin.on('verbose', console.log);
 }
 
 if (!cli_opts.silent) {
-    plugman.on('log', console.log);
-    plugman.on('warn', console.warn);
-    plugman.on('results', console.log);
+    xplugin.on('log', console.log);
+    xplugin.on('warn', console.warn);
+    xplugin.on('results', console.log);
 }
 
-plugman.on('error', console.error);
+xplugin.on('error', console.error);
 
 if (cli_opts.version) {
     console.log(package.version);
 } else if (cli_opts.help) {
-    console.log(plugman.help());
-} else if (plugman.commands[cmd]) {
-    var result = plugman.commands[cmd](cli_opts);
+    console.log(help());
+} else if (xplugin.commands[cmd]) {
+    var result = xplugin.commands[cmd](cli_opts);
     if (result && Q.isPromise(result)) {
         result.done();
     }
 } else {
-    console.log(plugman.help());
+    console.log(help());
 }
