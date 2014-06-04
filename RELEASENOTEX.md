@@ -722,3 +722,157 @@
 
 
  *  修改keyboard插件在whitelist中的id名称
+
+
+## 3.3.0-0.0.1 (Wed Jun 04 2014)
+
+
+ *  CB-6586: updated version to 0.22.2, cordova-lib dep needed an update
+ *  updated cordova-lib dep in package.json, need to republish
+ *  CB-6586: updated version to 0.22.0
+ *  Added cordova-lib to package.json as dep
+ *  Update plugman cli to use cordova-lib
+ *  Remove all cordova-lib files
+ *  Split out cordova-lib: move cordova-plugman files
+ *  CB-6491 add CONTRIBUTING.md
+ *  Fix unit tests when running node v0.11
+ *  Revert "Merge branch 'master' into browserify"
+ *  Remove trailing spaces in all js files
+ *  Fix spelling typos
+ *  CB-6280: plugman publish now publishes doc/index.md
+ *  added basic support for doc/index.md
+ *  CB-6178 Plugman does not cache downloaded plugins
+ *  fixing empty merges
+ *  Use events.emit instead of re-importing plugman each time. Part 2.
+ *  Use events.emit instead of re-importing plugman each time
+ *  fixing merge with no target
+ *  adding message to exception
+ *  removing window from target
+ *  adding prepare namespace
+ *  creating a transform for org.apache.cordova.* modules
+ *  adding clobbers/merges support
+ *  setting finish event on outputstream
+ *  cleanup
+ *  fixing path
+ *  adding browserify bundle
+ *  adding cordova-js as a dependency
+ *  adding browserify and through as dependencies
+ *  fixing merge with no target
+ *  adding message to exception
+ *  removing window from target
+ *  adding prepare namespace
+ *  creating a transform for org.apache.cordova.* modules
+ *  adding clobbers/merges support
+ *  setting finish event on outputstream
+ *  cleanup
+ *  fixing path
+ *  adding browserify bundle
+ *  adding cordova-js as a dependency
+ *  adding browserify and through as dependencies
+ *  CB-6414 - fixes the config.xml issue with android and ios, correcting the bug at the ConfigKeeper.get method
+ *  Removing console.log statement
+ *  CB-6414 - fixes the issue where two config.xml munges exists, it will still write the correct config.xml output
+ *  Revert "CB-6414 Fixes the issue where two config.xml munges exist, it will still write the correct config.xml output"
+ *  CB-6414 Fixes the issue where two config.xml munges exist, it will still write the correct config.xml output
+ *  CB-6245 Incremented package version to -dev
+ *  CB-6245 Updated version and RELEASENOTES.md for release 0.21.0
+ *  CB-6344 Specify after which sibling to add config-changes in plugin.xml
+ *  Revert "CB-6344: Specify after which sibling to add config-changes in plugin.xml"
+ *  CB-6272 Fix subdir bug + tests & meta fetch with a src directory
+ *  CB-6344: Specify after which sibling to add config-changes in plugin.xml
+ *  Tizen: Copy platform file verbatim from firefoxos
+ *  README.md: Place "Tizen" in alphabetical order
+ *  Adding spec for Tizen platform
+ *  README.md: Adding Tizen to list of supported platforms
+ *  src/platforms.js: Adding tizen.
+ *  Throw an error when a <dependency> tag is missing `id` attribute.
+ *  Added org.apache.cordova.statusbar into the registry whitelist.
+ *  PB-6160 adding plugin fails for Firefoxos.
+ *  Fix to never remove top-level plugins that are dependencies + tests.
+ *  Improve dependencies tests by grouping with beforeStart() Fix for dependency cycle / throw error.
+ *  Refactoring of install & uninstall tests
+ *  CB-6147 Enable CLI and Plugman with npm shrinkwrap
+ *  Allow --searchpath to have a delimiter
+ *  remove console.log, oops
+ *  working uninstall for projectReferences
+ *  projectReference.uninstall has to generate the plugin_dir because it is not passed to uninstall methods
+ *  formatting / readability
+ *  CB-5970 added type attribute 'projectReference' to <framework> element to signal addition of dependent project
+ *  remove double wip framework element
+ *  Separate out adding a dependent project from adding a .winmd reference in windows8
+ *  more work on adding project to solution
+ *  wip implementing reading guid from 'framework' project
+ *  CB-6162 Show a better error message when publish fails the whitelist
+ *  CB-6119 Fix `plugman info` command printing "undefined" always
+ *  CB-6159 Fix incorrect "success" message when publishing fails.
+ *  CB-6115 Incremented plugin version and added -dev.
+ *  修改平台json无法添加extra_config的问题
+ *  如果插件版本为非正式版本号（包含dev），不允许发布到插件服务器上
+ *  将getInstalledApps、findDefaultAppId从common.js移到multiapp-helpers.js中
+ *  CB-6115 Updated version and RELEASENOTES.md for release 0.20.2
+ *  CB-6151 Fix exception when adding a new platform to a CLI project
+ *  CB-6115 Incremented plugin version and added -dev.
+ *  CB-6115 Updated version and RELEASENOTES.md for release 0.20.1
+ *  Delete poorly written prepare tests that are broken by previous change.
+ *  CB-6124 Make `cordova plugin remove` resilient to a missing plugin directory
+ *  CB-6028 Protect against cyclic dependencies in install
+ *  CB-6128 Treat windows c: absolute paths like file:
+ *  removed sloppy console.logs on add/remove sdkRef for windows8
+ *  Add a LICENSE file
+ *  Add NOTICE file
+ *  CB-6123 Fix crash in handleUninstall introduces by recent action-stack refactoring
+ *  CB-6122 Fix exception on uninstall due to incorrect require() path.
+ *  CB-6115 Incremented plugin version to -dev branch.
+ *  CB-6115 Updated version and RELEASENOTES.md for release 0.20.0
+ *  CB-5006 Add a cache in searchpath logic.
+ *  CB-6076 Log message tweaks.
+ *  CB-5647 Move <assets> copying from install to prepare
+ *  Oops, I overcommitted
+ *  CB-6109 all platforms now implement all tags and do verbose log if the method is called but not supported.  Added tests
+ *  CB-6109 Refactored to make ActionStack action calls consistent across platforms, updated tests - all green
+ *  fix some readability, refactoring to make action-params consistent coming soon
+ *  added SDKReference support via 'lib-file' tags
+ *  CB-5804: added platform tag publishing to plugman
+ *  deleted empty line
+ *  stashing my changes
+ *  CB-6088: look for config.xml in www_dir and in project_dir
+ *  CB-6076 Tweak logging to be less verbose.
+ *  config-changes.js: Address review comments.
+ *  config-changes.js: Add reapply_global_munge().
+ *  config-changes.js: Rename add/remove_plugin_changes.
+ *  config-changes.js: Moved functions into PlatformMunger.
+ *  config-changes.js: Moving funcs around.
+ *  config-changes.js: Add separate functions to manipulate munge objects.
+ *  config-changes.js: Add pbxproj to ConfigKeeper.
+ *  config-changes.js: Removed plugins-plist support.
+ *  config-changes.js: Minor changes
+ *  config-changes.js: Convert remove_plugin_changes() to use PlatformMunger
+ *  config-changes.js: Added ConfigFile class to abstract details config files.
+ *  config-changes.js: Moved add_plugin_changes() to new class "PlatformMunger".
+ *  config-changes.js: require('../../plugman').emit() -> events.emit()
+ *  config-changes.js: Some simple changes & moving funcs around for better readability.
+ *  config-changes.js: Change to named functions and fix jshint warnings.
+ *  config-changes.js: Unindent by one level
+ *  Fixed failing tests (windows) android+ios by normalizing paths, removed wp .dll source file tests
+ *  Use path.extname instead of string parsing nonsense, remove ability to add .dll as content - it should be a framework/reference
+ *  Revert "Merge branch 'tizen' of https://github.com/gabrielschulhof/cordova-plugman"
+ *  CB-5885 Speed-up adding multiple plugins with plugman
+ *  CB-6025 ios: Do not add static libraries (.a) to source files
+ *  Adding spec for Tizen platform
+ *  README.md: Adding Tizen to list of supported platforms
+ *  src/platforms.js: Adding tizen.
+ *  CB-4886 Minor tweaks to Android & iOS plugman create templates.
+ *  CB-4886 Initial addition of "plugman create"
+ *  Print out only the version number for `plugman --version`
+ *  CB-5017 accept proxy config for plugman
+ *  CB-5990 Delete unused findPlugins() function
+ *  applied same addReference logic to csproj for WP8
+ *  cleanup console.log
+ *  added ability to add+remove ref to .winmd files
+ *  Updated readme to reflect that Windows8 IS supported
+ *  CB-5962 Incremented plugin version to -dev branch.
+ *  Tweak release notes
+ *  CB-5720: emit warning if resource-file is not supported on platform
+ *  reverted last change because ios does already support resource-file
+ *  CB-5720 add resource-file to plugin.xml for all platforms
+ *  CB-5720 add resource-file to plugin.xml

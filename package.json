@@ -2,7 +2,7 @@
   "author": "chenxy <chenxy@polyvi.com>",
   "name": "xplugin",
   "description": "install/uninstall xFace plugins",
-  "version": "3.2.0",
+  "version": "3.3.0-0.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/polyvi/xplugin.git"
@@ -17,7 +17,7 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "xface-lib" : "3.2.0",
+    "xface-lib": "3.3.0-0.0.1",
     "nopt": "1.0.x",
     "underscore": "1.4.4",
     "q": "~0.9",
