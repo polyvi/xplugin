@@ -876,3 +876,6 @@
  *  reverted last change because ios does already support resource-file
  *  CB-5720 add resource-file to plugin.xml for all platforms
  *  CB-5720 add resource-file to plugin.xml
+
+
+## 3.3.0 (Fri Jun 20 2014)
